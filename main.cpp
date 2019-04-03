@@ -189,10 +189,51 @@ bool Calendar::isLeap() const
 
 void Calendar::printMonths() const
 {
-	int cur[12] = { 0 };//이거 필수냐?
-	int max[12] = { 31, isLeap() ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-	int day[12];
+	int 날짜[12] = { 0 };//이거 필수냐?
+	int 한계[12] = { 31, isLeap() ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	int 요일[12];
 
+	int temp = year - 1;
+	요일[0] = (year * 365 + year / 4 - year / 100 + year / 400) % 7;
+	for (int i = 0; i < 11; i += 1)
+	{
+		요일[i + 1] = (요일[i] + 한계[i]) % 7;
+	}
+
+	for (int i = 0; i < 12; i += 1)
+	{
+		printf("%2d월\n", i + 1);
+		cout << "일  월  화  수  목  금  토  " << endl;
+		int j = 0;
+		while (true)
+		{
+			if (요일[i] == j)
+			{
+				printf("%2d  ", ++날짜[i]);
+				++요일[i] %= 7;
+
+				if (날짜[i] == 한계[i])
+				{
+					cout << endl;
+					break;
+				}
+			}
+			else
+			{
+				cout << "    ";
+			}
+
+			if (j == 6)
+			{
+				cout << endl;
+				j = 0;
+			}
+			else
+			{
+				j += 1;
+			}
+		}
+	}
 }
 
 void Calendar::print() const
